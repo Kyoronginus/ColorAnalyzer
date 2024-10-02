@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Analysis Results</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <h1>Image Analysis Result</h1>
+    
+    <!-- レイアウトの行 -->
+    <div class="row">
+        
+        <!-- 元画像と簡略化画像のコンテナ -->
+        <div class="column">
+            <div class="result-card">
+                <h2>Original Image</h2>
+                <img class="result-image" src="{{ url_for('static', filename=original_image) }}" alt="Original Image">
+            </div>
+            <div class="result-card">
+                <h2>Simplified Image</h2>
+                <img class="result-image" src="{{ url_for('static', filename=simplified_image_path) }}" alt="Simplified Image">
+            </div>
+        </div>
+        
+        <!-- 分布グラフのコンテナ -->
+        <div class="column">
+            <div class="result-card">
+                <h3>Color Distribution</h3>
+                <img class="result-image" src="{{ url_for('static', filename=color_distribution_path) }}" alt="Color Distribution">
+            </div>
+            <div class="result-card">
+                <h3>Hue Distribution</h3>
+                <img class="result-image" src="{{ url_for('static', filename=hue_distribution_path) }}" alt="Hue Distribution">
+            </div>
+            <div class="result-card">
+                <h3>Brightness Distribution</h3>
+                <img class="result-image" src="{{ url_for('static', filename=brightness_distribution_path) }}" alt="Brightness Distribution">
+            </div>
+            <div class="result-card">
+                <h3>Saturation Distribution</h3>
+                <img class="result-image" src="{{ url_for('static', filename=saturation_distribution_path) }}" alt="Saturation Distribution">
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- CSSでスタイルを追加するためのスクリプト -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+        }
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .column {
+            flex: 1;
+            margin: 10px;
+            padding: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .result-card {
+            margin-bottom: 20px;
+        }
+        .result-image {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+        }
+        h1, h2, h3 {
+            text-align: center;
+        }
+    </style>
+</body>
+
+</html>
