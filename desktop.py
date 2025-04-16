@@ -25,8 +25,18 @@ os.makedirs('static/results', exist_ok=True)
 os.makedirs('static/uploads', exist_ok=True)
 
 
+def load_stylesheet(path):
+    with open(path, "r", encoding="utf-8") as f:
+        return f.read()
+
+
 if __name__ == '__main__':
+    import sys
     app = QApplication(sys.argv)
+
+    # 外部スタイルシートを読み込む
+    app.setStyleSheet(load_stylesheet("gui/style.qss"))
+
     window = AppWindow()
     window.show()
     sys.exit(app.exec_())

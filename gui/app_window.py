@@ -1,24 +1,11 @@
-import sys
-import os
-from PIL import Image
-import numpy as np
-import cv2
-from sklearn.cluster import KMeans
-import matplotlib.pyplot as plt
-from watchdog.observers import Observer
-from watchdog.events import FileSystemEventHandler
-import time
-from PyQt5.QtCore import Qt,QThread, pyqtSignal
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QMessageBox,QVBoxLayout, QPushButton, QLabel, QFileDialog, QTextEdit
-from PyQt5.QtGui import QPixmap
-from psd_tools import PSDImage
-import subprocess
-from logics.monitor_thread import MonitorThread
-import matplotlib.pyplot as plt
-from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
-
-from PyQt5.QtWidgets import QScrollArea
+from PyQt5.QtWidgets import (
+    QApplication, QWidget, QPushButton, QMessageBox,
+    QVBoxLayout, QLabel, QFileDialog, QTextEdit, QScrollArea
+)
+from PyQt5.QtGui import QPixmap
+import os
+from logics.monitor_thread import MonitorThread
 
 class AppWindow(QWidget):
     def __init__(self):
@@ -31,7 +18,7 @@ class AppWindow(QWidget):
         # スクロール可能なウィジェットエリアを作成
         scroll_area = QScrollArea(self)
         scroll_area.setWidgetResizable(True)
-        
+
         # メインウィジェットをスクロールエリア内に設定
         widget = QWidget()
         layout = QVBoxLayout(widget)
@@ -64,24 +51,24 @@ class AppWindow(QWidget):
 
         # メイン画像表示用の QLabel
         self.image_label = QLabel(self)
-        self.image_label.setFixedSize(400, 400)  # サイズを指定
+        self.image_label.setFixedSize(600, 600)  # サイズを大きく
         layout.addWidget(self.image_label)
 
         # 色分析結果の画像表示用 QLabel
         self.color_distribution_label = QLabel(self)
-        self.color_distribution_label.setFixedSize(400, 200)
+        self.color_distribution_label.setFixedSize(600, 300)
         layout.addWidget(self.color_distribution_label)
 
         self.brightness_curve_label = QLabel(self)
-        self.brightness_curve_label.setFixedSize(400, 200)
+        self.brightness_curve_label.setFixedSize(600, 300)
         layout.addWidget(self.brightness_curve_label)
 
         self.saturation_distribution_label = QLabel(self)
-        self.saturation_distribution_label.setFixedSize(400, 200)
+        self.saturation_distribution_label.setFixedSize(600, 300)
         layout.addWidget(self.saturation_distribution_label)
 
         self.hue_wheel_label = QLabel(self)
-        self.hue_wheel_label.setFixedSize(400, 400)
+        self.hue_wheel_label.setFixedSize(600, 600)
         layout.addWidget(self.hue_wheel_label)
 
         # レイアウトをスクロールエリアにセット
@@ -94,7 +81,7 @@ class AppWindow(QWidget):
 
         # ウィンドウのタイトルとサイズを設定
         self.setWindowTitle('psd File Monitor')
-        self.setGeometry(300, 300, 500, 800)  # ウィンドウの幅と高さを指定
+        self.setGeometry(300, 100, 700, 1000)  # 横幅700にして表示ゆとりを増加
 
     def select_file(self):
         file_dialog = QFileDialog(self)
@@ -104,7 +91,6 @@ class AppWindow(QWidget):
             self.selected_file = file_path
             self.label.setText(f'Selected File: {os.path.basename(file_path)}')
             self.monitor_button.setEnabled(True)
-
 
     def start_monitoring(self):
         if self.selected_file:
