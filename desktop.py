@@ -169,7 +169,7 @@ class ClipFileHandler(FileSystemEventHandler):
         self.update_function = update_function
 
     def on_modified(self, event):
-        if event.src_path.endswith(('.clip', '.psd')):
+        if event.src_path.endswith(('.png')):
             self.update_function(f"Updated file: {event.src_path}")
             try:
                 if event.src_path.endswith('.psd'):
@@ -179,6 +179,17 @@ class ClipFileHandler(FileSystemEventHandler):
                         self.update_function(f"Results: {color_analysis_result}")
                     else:
                         self.update_function(f"Failed to analyze {event.src_path}.")
+
+                elif event.src_path.endswith('.png'):
+                    # PNGファイルをPSDに変換
+                    output_psd_path = os.path.join('static/uploads', os.path.basename(event.src_path).replace('.png', '.psd'))
+                    # PSD への変換に成功した場合、色分析を実行
+                    color_analysis_result = analyze_image_colors(output_psd_path, os.path.basename(output_psd_path))
+                    if color_analysis_result:
+                        self.update_function(f"Color analysis completed for: {output_psd_path}")
+                        self.update_function(f"Results: {color_analysis_result}")
+                    else:
+                        self.update_function(f"Failed to analyze {output_psd_path}.")
                 elif event.src_path.endswith('.clip'):
                     # CLIPファイルをPSDに変換
                     output_psd_path = os.path.join('static/uploads', os.path.basename(event.src_path).replace('.clip', '.psd'))
@@ -246,10 +257,10 @@ class AppWindow(QWidget):
         layout = QVBoxLayout(widget)
 
         # ファイル選択関連のウィジェット
-        self.label = QLabel('Select a .psd file to monitor:')
+        self.label = QLabel('Select a file to monitor:')
         layout.addWidget(self.label)
 
-        self.select_button = QPushButton('Select .psd File', self)
+        self.select_button = QPushButton('Select a File', self)
         self.select_button.clicked.connect(self.select_file)
         layout.addWidget(self.select_button)
 
@@ -307,12 +318,13 @@ class AppWindow(QWidget):
 
     def select_file(self):
         file_dialog = QFileDialog(self)
-        file_dialog.setNameFilter("Clip/Psd Files (*.psd *.clip)")
-        file_path, _ = file_dialog.getOpenFileName(self, "Select .psd or .clip File", "", "Clip/Psd Files (*.psd *.clip)")
+        file_dialog.setNameFilter("Image Files (*.psd *.clip *.png)")
+        file_path, _ = file_dialog.getOpenFileName(self, "Select .psd, .clip, or .png File", "", "Image Files (*.psd *.clip *.png)")
         if file_path:
             self.selected_file = file_path
             self.label.setText(f'Selected File: {os.path.basename(file_path)}')
             self.monitor_button.setEnabled(True)
+
 
     def start_monitoring(self):
         if self.selected_file:
