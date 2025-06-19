@@ -32,15 +32,14 @@ class ClipFileHandler(FileSystemEventHandler):
                         self.update_function(f"Failed to analyze {event.src_path}.")
 
                 elif event.src_path.endswith('.png'):
-                    # PNGファイルをPSDに変換
-                    output_psd_path = os.path.join('static/uploads', os.path.basename(event.src_path).replace('.png', '.psd'))
-                    # PSD への変換に成功した場合、色分析を実行
-                    color_analysis_result = analyze_image_colors(output_psd_path, os.path.basename(output_psd_path))
+                    # PNGファイルをそのまま分析（変換不要）
+                    color_analysis_result = analyze_image_colors(event.src_path, os.path.basename(event.src_path))
                     if color_analysis_result:
-                        self.update_function(f"Color analysis completed for: {output_psd_path}")
+                        self.update_function(f"Color analysis completed for: {event.src_path}")
                         self.update_function(f"Results: {color_analysis_result}")
                     else:
-                        self.update_function(f"Failed to analyze {output_psd_path}.")
+                        self.update_function(f"Failed to analyze {event.src_path}.")
+
                 elif event.src_path.endswith('.clip'):
                     # CLIPファイルをPSDに変換
                     output_psd_path = os.path.join('static/uploads', os.path.basename(event.src_path).replace('.clip', '.psd'))

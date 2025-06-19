@@ -1,7 +1,7 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (
     QApplication, QWidget, QPushButton, QMessageBox,
-    QVBoxLayout, QLabel, QFileDialog, QTextEdit, QScrollArea
+    QVBoxLayout, QLabel, QFileDialog, QTextEdit, QScrollArea, QGridLayout
 )
 from PyQt5.QtGui import QPixmap
 import os
@@ -12,6 +12,7 @@ class AppWindow(QWidget):
         super().__init__()
         self.monitor_thread = None
         self.selected_file = None
+        self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
         self.initUI()
 
     def initUI(self):
@@ -24,52 +25,63 @@ class AppWindow(QWidget):
         layout = QVBoxLayout(widget)
 
         # ファイル選択関連のウィジェット
+        controls_layout = QVBoxLayout()
         self.label = QLabel('Select a file to monitor:')
-        layout.addWidget(self.label)
+        controls_layout.addWidget(self.label)
 
         self.select_button = QPushButton('Select a File', self)
         self.select_button.clicked.connect(self.select_file)
-        layout.addWidget(self.select_button)
+        controls_layout.addWidget(self.select_button)
 
         self.monitor_button = QPushButton('Start Monitoring', self)
         self.monitor_button.setEnabled(False)
         self.monitor_button.clicked.connect(self.start_monitoring)
-        layout.addWidget(self.monitor_button)
+        controls_layout.addWidget(self.monitor_button)
 
         self.stop_button = QPushButton('Stop Monitoring', self)
         self.stop_button.setEnabled(False)
         self.stop_button.clicked.connect(self.stop_monitoring)
-        layout.addWidget(self.stop_button)
+        controls_layout.addWidget(self.stop_button)
+        layout.addLayout(controls_layout)
 
         # ログ出力用
         self.log_box = QTextEdit(self)
         self.log_box.setReadOnly(True)
+        self.log_box.setMaximumHeight(100)
         layout.addWidget(self.log_box)
 
         self.result_label = QLabel('Analysis Results will be shown here.')
         layout.addWidget(self.result_label)
 
+        # 可視化要素をグリッドレイアウトで配置
+        grid_layout = QGridLayout()
+        
         # メイン画像表示用の QLabel
         self.image_label = QLabel(self)
-        self.image_label.setFixedSize(600, 600)  # サイズを大きく
-        layout.addWidget(self.image_label)
-
+        self.image_label.setFixedSize(340, 340)
+        grid_layout.addWidget(self.image_label, 0, 0)
+        
+        # 色相環の表示用 QLabel
+        self.hue_wheel_label = QLabel(self)
+        self.hue_wheel_label.setFixedSize(340, 340)
+        grid_layout.addWidget(self.hue_wheel_label, 0, 1)
+        
         # 色分析結果の画像表示用 QLabel
         self.color_distribution_label = QLabel(self)
-        self.color_distribution_label.setFixedSize(600, 300)
-        layout.addWidget(self.color_distribution_label)
-
+        self.color_distribution_label.setFixedSize(340, 170)
+        grid_layout.addWidget(self.color_distribution_label, 1, 0)
+        
+        # 明度曲線の表示用 QLabel
         self.brightness_curve_label = QLabel(self)
-        self.brightness_curve_label.setFixedSize(600, 300)
-        layout.addWidget(self.brightness_curve_label)
-
+        self.brightness_curve_label.setFixedSize(340, 170)
+        grid_layout.addWidget(self.brightness_curve_label, 1, 1)
+        
+        # 彩度分布の表示用 QLabel
         self.saturation_distribution_label = QLabel(self)
-        self.saturation_distribution_label.setFixedSize(600, 300)
-        layout.addWidget(self.saturation_distribution_label)
-
-        self.hue_wheel_label = QLabel(self)
-        self.hue_wheel_label.setFixedSize(600, 600)
-        layout.addWidget(self.hue_wheel_label)
+        self.saturation_distribution_label.setFixedSize(340, 170)
+        grid_layout.addWidget(self.saturation_distribution_label, 2, 0, 1, 2)
+        
+        layout.addLayout(grid_layout)
 
         # レイアウトをスクロールエリアにセット
         scroll_area.setWidget(widget)
@@ -81,7 +93,7 @@ class AppWindow(QWidget):
 
         # ウィンドウのタイトルとサイズを設定
         self.setWindowTitle('psd File Monitor')
-        self.setGeometry(300, 100, 700, 1000)  # 横幅700にして表示ゆとりを増加
+        self.setGeometry(300, 100, 720, 800)  # 横幅を広げ、高さを調整
 
     def select_file(self):
         file_dialog = QFileDialog(self)

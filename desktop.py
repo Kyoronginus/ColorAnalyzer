@@ -24,9 +24,13 @@ from PyQt5.QtWidgets import QScrollArea
 os.makedirs('static/results', exist_ok=True)
 os.makedirs('static/uploads', exist_ok=True)
 
+def resource_path(relative_path):
+    """PyInstaller でパスが変わっても対応できるようにする"""
+    base_path = getattr(sys, '_MEIPASS', os.path.abspath("."))
+    return os.path.join(base_path, relative_path)
 
 def load_stylesheet(path):
-    with open(path, "r", encoding="utf-8") as f:
+    with open(resource_path(path), "r", encoding="utf-8") as f:
         return f.read()
 
 
