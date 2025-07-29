@@ -8,6 +8,13 @@
 </head>
 <body>
     <h1>Image Analysis Result</h1>
+
+    <div style="text-align: center; margin-bottom: 20px;">
+        <a href="{{ url_for('result_3d', filename=original_image.split('/')[-1]) }}"
+           style="display: inline-block; padding: 12px 24px; background: linear-gradient(45deg, #FF6B6B, #4ECDC4, #45B7D1); color: white; text-decoration: none; border-radius: 8px; font-weight: bold; transition: transform 0.3s;">
+            🎨 View in 3D
+        </a>
+    </div>
     
     <!-- レイアウトの行 -->
     <div class="row">
