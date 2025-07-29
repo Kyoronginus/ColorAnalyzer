@@ -28,6 +28,43 @@
             font-family: 'Roboto', sans-serif;
             background-color: #000;
             color: #fff;
+            cursor: none;
+        }
+
+        /* カスタムカーソル（シャボン玉風） */
+        .custom-cursor {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), rgba(255,255,255,0.3), rgba(255,255,255,0.1));
+            border: 2px solid rgba(255,255,255,0.4);
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: all 0.1s ease;
+            backdrop-filter: blur(2px);
+        }
+
+        .custom-cursor::before {
+            content: '';
+            position: absolute;
+            top: 15%;
+            left: 25%;
+            width: 20%;
+            height: 20%;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            filter: blur(1px);
+        }
+
+        .custom-cursor.hover {
+            transform: translate(-50%, -50%) scale(1.2);
+            background: radial-gradient(circle at 30% 30%, rgba(100, 200, 255, 0.9), rgba(100, 200, 255, 0.4), rgba(100, 200, 255, 0.1));
+            border-color: rgba(100, 200, 255, 0.6);
+            box-shadow:
+                0 0 30px rgba(100, 200, 255, 0.5),
+                inset 0 0 20px rgba(100, 200, 255, 0.3);
         }
 
         #three-container {
@@ -123,6 +160,7 @@
     </style>
 </head>
 <body>
+    <div class="custom-cursor"></div>
     <div id="three-container"></div>
 
     <div id="pointer-lock-instructions">
@@ -146,16 +184,23 @@
                 <button id="hsv-mode" onclick="switchColorSpace('hsv')">HSV</button>
             </div>
         </div>
-        <div class="control-group">
+        <!-- <div class="control-group">
             <label>Camera Mode</label>
             <div class="mode-selector">
                 <button id="orbit-mode" class="active" onclick="switchControls('orbit')">Orbit</button>
                 <button id="fly-mode" onclick="switchControls('fly')">Fly</button>
             </div>
-        </div>
+        </div> -->
         <div class="control-group">
             <label for="bloom-strength">Bloom Strength</label>
             <input type="range" id="bloom-strength" min="0" max="3" step="0.1" value="1.5" onchange="updateBloom(this.value)">
+        </div>
+        <div class="control-group">
+            <label>Background Color</label>
+            <div class="mode-selector">
+                <button id="bg-dark" class="active" onclick="switchBackground('dark')">Dark</button>
+                <button id="bg-light" onclick="switchBackground('light')">Light</button>
+            </div>
         </div>
         <div class="control-group">
             <a href="{{ url_for('home') }}" class="control-button" style="text-decoration: none;">🏠 New Image</a>
@@ -204,6 +249,40 @@
         function updateBloom(value) {
             if (visualizer) visualizer.setBloomStrength(parseFloat(value));
         }
+
+        function switchBackground(mode) {
+            document.querySelectorAll('#bg-dark, #bg-light').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById('bg-' + mode).classList.add('active');
+
+            if (visualizer) {
+                if (mode === 'light') {
+                    visualizer.scene.background = new THREE.Color(0xffffff);
+                } else {
+                    visualizer.scene.background = new THREE.Color(0x000000);
+                }
+            }
+        }
+
+        // // カスタムカーソル
+        // const customCursor = document.querySelector('.custom-cursor');
+
+        // document.addEventListener('mousemove', (e) => {
+        //     customCursor.style.left = e.clientX + 'px';
+        //     customCursor.style.top = e.clientY + 'px';
+        // });
+
+        // // ホバー効果
+        // document.querySelectorAll('button, .ui-panel').forEach(element => {
+        //     element.addEventListener('mouseenter', () => {
+        //         customCursor.classList.add('hover');
+        //     });
+
+        //     element.addEventListener('mouseleave', () => {
+        //         customCursor.classList.remove('hover');
+        //     });
+        // });
     </script>
 </body>
 </html>
