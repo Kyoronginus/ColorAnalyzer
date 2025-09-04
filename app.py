@@ -1,4 +1,4 @@
-from flask import Flask, render_template, Response, request, redirect, url_for, jsonify
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 from PIL import Image
 import numpy as np
 import cv2
@@ -8,10 +8,7 @@ import io
 import os
 import matplotlib
 import time
-from mss import mss
-from pygetwindow import getWindowsWithTitle
 from utils.image_analysis import analyze_image_colors
-from utils.real_time_analysis import analyze_and_stream
 from utils.color_3d_processor import create_3d_visualization_data
 matplotlib.use('Agg')  # GUIバックエンドを使用しない設定
 
@@ -179,10 +176,13 @@ def api_color_data_3d(filename):
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-# Real-time video feed route
+# Real-time video feed route (disabled for Cloud Run deployment)
 @app.route('/video_feed')
 def video_feed():
-    return Response(analyze_and_stream(), mimetype='multipart/x-mixed-replace; boundary=frame')
+    # Note: Real-time screen capture is not available in Cloud Run environment
+    return jsonify({'error': 'Real-time capture not available in cloud environment'}), 501
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # Get port from environment variable for Cloud Run
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=False)

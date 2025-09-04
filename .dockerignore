@@ -1,0 +1,64 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Node modules (if any)
+node_modules/
+
+# Logs
+*.log
+
+# Desktop app files
+desktop.py
+desktop.spec
+gui/
+
+# Development files
+README.md
+.env
+.env.local
+
+# Large files that shouldn't be in container
+static/uploads/*
+static/results/*
+
+# Keep directory structure but ignore contents
+!static/uploads/.gitkeep
+!static/results/.gitkeep
