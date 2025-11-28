@@ -45,6 +45,11 @@ instance/
 .env.development.local
 .env.test.local
 .env.production.local
+*.key
+secrets.json
+credentials.json
+token.json
+client_secret.json
 
 # IDE and editors
 .vscode/
@@ -102,7 +107,7 @@ tmp/
 
 # Desktop application files
 gui/__pycache__/
-desktop.py
+
 desktop.spec
 command/
 
@@ -126,3 +131,6 @@ local_settings.py
 
 # Cloud deployment (keep templates)
 .gcloudignore
+
+DEPLOYMENT.md
+QUICK_DEPLOY.md
