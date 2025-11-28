@@ -16,15 +16,15 @@ class AppWindow(QWidget):
         self.initUI()
 
     def initUI(self):
-        # スクロール可能なウィジェットエリアを作成
+        # create scrollable widget area
         scroll_area = QScrollArea(self)
         scroll_area.setWidgetResizable(True)
 
-        # メインウィジェットをスクロールエリア内に設定
+        # set main widget to scroll area
         widget = QWidget()
         layout = QVBoxLayout(widget)
 
-        # ファイル選択関連のウィジェット
+        # file selection related widgets
         controls_layout = QVBoxLayout()
         self.label = QLabel('Select a file to monitor:')
         controls_layout.addWidget(self.label)
@@ -44,7 +44,7 @@ class AppWindow(QWidget):
         controls_layout.addWidget(self.stop_button)
         layout.addLayout(controls_layout)
 
-        # ログ出力用
+        # log box
         self.log_box = QTextEdit(self)
         self.log_box.setReadOnly(True)
         self.log_box.setMaximumHeight(100)
@@ -53,47 +53,47 @@ class AppWindow(QWidget):
         self.result_label = QLabel('Analysis Results will be shown here.')
         layout.addWidget(self.result_label)
 
-        # 可視化要素をグリッドレイアウトで配置
+        # visualization elements
         grid_layout = QGridLayout()
         
-        # メイン画像表示用の QLabel
+        # main image display
         self.image_label = QLabel(self)
         self.image_label.setFixedSize(340, 340)
         grid_layout.addWidget(self.image_label, 0, 0)
         
-        # 色相環の表示用 QLabel
+        # hue wheel display
         self.hue_wheel_label = QLabel(self)
         self.hue_wheel_label.setFixedSize(340, 340)
         grid_layout.addWidget(self.hue_wheel_label, 0, 1)
         
-        # 色分析結果の画像表示用 QLabel
+        # color distribution display
         self.color_distribution_label = QLabel(self)
         self.color_distribution_label.setFixedSize(340, 170)
         grid_layout.addWidget(self.color_distribution_label, 1, 0)
         
-        # 明度曲線の表示用 QLabel
+        # brightness curve display
         self.brightness_curve_label = QLabel(self)
         self.brightness_curve_label.setFixedSize(340, 170)
         grid_layout.addWidget(self.brightness_curve_label, 1, 1)
         
-        # 彩度分布の表示用 QLabel
+        # saturation distribution display
         self.saturation_distribution_label = QLabel(self)
         self.saturation_distribution_label.setFixedSize(340, 170)
         grid_layout.addWidget(self.saturation_distribution_label, 2, 0, 1, 2)
         
         layout.addLayout(grid_layout)
 
-        # レイアウトをスクロールエリアにセット
+        # set layout to scroll area
         scroll_area.setWidget(widget)
 
-        # 全体のレイアウトを作成してウィンドウに適用
+        # set main layout to window
         main_layout = QVBoxLayout(self)
         main_layout.addWidget(scroll_area)
         self.setLayout(main_layout)
 
-        # ウィンドウのタイトルとサイズを設定
+        # set window title and size
         self.setWindowTitle('psd File Monitor')
-        self.setGeometry(300, 100, 720, 800)  # 横幅を広げ、高さを調整
+        self.setGeometry(300, 100, 720, 800)  # width, height
 
     def select_file(self):
         file_dialog = QFileDialog(self)
@@ -133,7 +133,6 @@ class AppWindow(QWidget):
             saturation_distribution_path = os.path.normpath(result_files[3].strip())
             hue_wheel_path = os.path.normpath(result_files[4].strip())
 
-            # 各結果画像を表示
             self.display_image(simplified_image_path, self.image_label)
             self.display_image(hue_wheel_path, self.hue_wheel_label)
             self.display_image(color_distribution_path, self.color_distribution_label)

@@ -38,7 +38,7 @@ gcloud services enable containerregistry.googleapis.com
 
 REM Build and deploy using Cloud Build
 echo 🏗️ Building and deploying with Cloud Build...
-gcloud builds submit --config cloudbuild.yaml
+gcloud builds submit --config cloudbuild.yaml --substitutions=COMMIT_SHA=manual
 
 echo ✅ Deployment complete!
 echo 🌐 Your ColorAnalyzer app should be available at:

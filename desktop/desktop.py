@@ -25,7 +25,6 @@ os.makedirs('static/results', exist_ok=True)
 os.makedirs('static/uploads', exist_ok=True)
 
 def resource_path(relative_path):
-    """PyInstaller でパスが変わっても対応できるようにする"""
     base_path = getattr(sys, '_MEIPASS', os.path.abspath("."))
     return os.path.join(base_path, relative_path)
 
@@ -37,8 +36,6 @@ def load_stylesheet(path):
 if __name__ == '__main__':
     import sys
     app = QApplication(sys.argv)
-
-    # 外部スタイルシートを読み込む
     app.setStyleSheet(load_stylesheet("gui/style.qss"))
 
     window = AppWindow()

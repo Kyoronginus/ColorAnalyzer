@@ -3,6 +3,7 @@
 ## Step 1: Setup Google Cloud
 
 1. **Create Google Cloud Project**:
+
    - Go to [console.cloud.google.com](https://console.cloud.google.com)
    - Create a new project
    - Note your PROJECT_ID
@@ -14,6 +15,7 @@
 ## Step 2: Configure Project
 
 1. **Edit deployment files**:
+
    - Open `deploy.sh` (Linux/Mac) or `deploy.bat` (Windows)
    - Replace `your-project-id` with your actual PROJECT_ID
 
@@ -24,11 +26,13 @@
 ## Step 3: Deploy
 
 ### Windows:
+
 ```cmd
 deploy.bat
 ```
 
 ### Linux/Mac:
+
 ```bash
 chmod +x deploy.sh
 ./deploy.sh
@@ -37,8 +41,9 @@ chmod +x deploy.sh
 ## Step 4: Access Your App
 
 After deployment completes, you'll get a URL like:
+
 ```
-https://coloranalyzer-[hash]-us-central1.a.run.app
+https://coloranalyzer-sadqrvcttsa-uc.a.run.app
 ```
 
 ## 💰 Cost
@@ -50,6 +55,7 @@ https://coloranalyzer-[hash]-us-central1.a.run.app
 ## 🔧 Troubleshooting
 
 **Build fails?**
+
 ```bash
 gcloud logs tail --service=coloranalyzer
 ```

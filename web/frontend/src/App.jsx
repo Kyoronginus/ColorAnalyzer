@@ -25,8 +25,8 @@ function App() {
     formData.append("image", selectedFile);
 
     try {
-      // Flask port 5000
-      const response = await fetch("http://localhost:5000/upload", {
+      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000";
+      const response = await fetch(`${apiUrl}/upload`, {
         method: "POST",
         body: formData,
       });
@@ -46,7 +46,7 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen w-screen flex justify-center items-center bg-[#0f0f13] text-[#eeeeee] font-sans">
+    <div className="min-h-screen w-screen flex flex-col justify-center items-center bg-[#0f0f13] text-[#eeeeee] font-sans">
       <div className="max-w-[1200px] mx-auto p-8 text-center">
         <header>
           <h1 className="text-6xl mb-2 font-extrabold bg-gradient-to-tr from-[#4ecca3] to-[#45a29e] bg-clip-text text-transparent">
@@ -85,7 +85,7 @@ function App() {
                   className="bg-gradient-to-tr from-[#4ecca3] to-[#45a29e] border-none px-12 py-4 rounded-full text-[#0f0f13] text-lg font-bold cursor-pointer transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_5px_20px_rgba(78,204,163,0.4)] disabled:opacity-70 disabled:cursor-not-allowed"
                   disabled={loading}
                 >
-                  {loading ? "Analyzing..." : "Analyze Colors"}
+                  {loading ? "Analyzing..." : "Analyze"}
                 </button>
               </div>
             )}
@@ -121,6 +121,12 @@ function App() {
             </div>
           )}
         </main>
+      </div>
+
+      <div>
+        <p className="font-semibold text-[#a6a6a6] text-xl my-10">
+          This site has been created by Kyoronginus
+        </p>
       </div>
     </div>
   );
